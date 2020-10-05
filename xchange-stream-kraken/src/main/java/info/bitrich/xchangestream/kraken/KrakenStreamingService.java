@@ -1,7 +1,5 @@
 package info.bitrich.xchangestream.kraken;
 
-import static info.bitrich.xchangestream.kraken.dto.enums.KrakenEventType.subscribe;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,14 +14,17 @@ import info.bitrich.xchangestream.service.netty.StreamingObjectMapperHelper;
 import info.bitrich.xchangestream.service.netty.WebSocketClientHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static info.bitrich.xchangestream.kraken.dto.enums.KrakenEventType.subscribe;
 
 /** @author makarid, pchertalev */
 public class KrakenStreamingService extends JsonNettyStreamingService {
@@ -36,7 +37,7 @@ public class KrakenStreamingService extends JsonNettyStreamingService {
   private final Map<Integer, String> subscriptionRequestMap = new ConcurrentHashMap<>();
 
   public KrakenStreamingService(boolean isPrivate, String uri) {
-    super(uri, Integer.MAX_VALUE);
+    super(uri, Integer.MAX_VALUE, DEFAULT_CONNECTION_TIMEOUT, DEFAULT_RETRY_DURATION, 5);
     this.isPrivate = isPrivate;
   }
 
@@ -115,7 +116,7 @@ public class KrakenStreamingService extends JsonNettyStreamingService {
   }
 
   @Override
-  protected String getChannelNameFromMessage(JsonNode message) throws IOException {
+  protected String getChannelNameFromMessage(JsonNode message) {
     String channelName = null;
     if (message.has("channelID")) {
       channelName = channels.get(message.get("channelID").asInt());

@@ -85,6 +85,11 @@ public class KrakenStreamingExchange extends KrakenExchange implements Streaming
   }
 
   @Override
+  public Observable<Object> connectionIdle() {
+    return streamingService.subscribeIdle();
+  }
+
+  @Override
   public ExchangeSpecification getDefaultExchangeSpecification() {
     ExchangeSpecification spec = super.getDefaultExchangeSpecification();
     spec.setShouldLoadRemoteMetaData(false);
