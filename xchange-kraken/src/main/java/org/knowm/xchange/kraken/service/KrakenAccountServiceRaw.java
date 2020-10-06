@@ -1,17 +1,39 @@
 package org.knowm.xchange.kraken.service;
 
+import org.knowm.xchange.Exchange;
+import org.knowm.xchange.currency.Currency;
+import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.kraken.KrakenUtils;
+import org.knowm.xchange.kraken.dto.account.DepostitStatus;
+import org.knowm.xchange.kraken.dto.account.KrakenDepositAddress;
+import org.knowm.xchange.kraken.dto.account.KrakenDepositMethods;
+import org.knowm.xchange.kraken.dto.account.KrakenLedger;
+import org.knowm.xchange.kraken.dto.account.KrakenTradeBalanceInfo;
+import org.knowm.xchange.kraken.dto.account.KrakenTradeVolume;
+import org.knowm.xchange.kraken.dto.account.KrakenWebsocketToken;
+import org.knowm.xchange.kraken.dto.account.LedgerType;
+import org.knowm.xchange.kraken.dto.account.Withdraw;
+import org.knowm.xchange.kraken.dto.account.WithdrawInfo;
+import org.knowm.xchange.kraken.dto.account.WithdrawStatus;
+import org.knowm.xchange.kraken.dto.account.results.DepositStatusResult;
+import org.knowm.xchange.kraken.dto.account.results.KrakenBalanceResult;
+import org.knowm.xchange.kraken.dto.account.results.KrakenDepositAddressResult;
+import org.knowm.xchange.kraken.dto.account.results.KrakenDepositMethodsResults;
+import org.knowm.xchange.kraken.dto.account.results.KrakenLedgerResult;
+import org.knowm.xchange.kraken.dto.account.results.KrakenQueryLedgerResult;
+import org.knowm.xchange.kraken.dto.account.results.KrakenTradeBalanceInfoResult;
+import org.knowm.xchange.kraken.dto.account.results.KrakenTradeVolumeResult;
+import org.knowm.xchange.kraken.dto.account.results.KrakenWebsocketTokenResult;
+import org.knowm.xchange.kraken.dto.account.results.WithdrawInfoResult;
+import org.knowm.xchange.kraken.dto.account.results.WithdrawResult;
+import org.knowm.xchange.kraken.dto.account.results.WithdrawStatusResult;
+import org.knowm.xchange.utils.DateUtils;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.knowm.xchange.Exchange;
-import org.knowm.xchange.currency.Currency;
-import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.kraken.KrakenUtils;
-import org.knowm.xchange.kraken.dto.account.*;
-import org.knowm.xchange.kraken.dto.account.results.*;
-import org.knowm.xchange.utils.DateUtils;
 
 /** @author jamespedwards42 */
 public class KrakenAccountServiceRaw extends KrakenBaseService {
@@ -272,10 +294,11 @@ public class KrakenAccountServiceRaw extends KrakenBaseService {
     return checkResult(ledgerResult);
   }
 
-  public KrakenTradeVolume getTradeVolume(CurrencyPair... currencyPairs) throws IOException {
+  public KrakenTradeVolume getTradeVolume(boolean feeInfo, CurrencyPair... currencyPairs) throws IOException {
     KrakenTradeVolumeResult result =
         kraken.tradeVolume(
             delimitAssetPairs(currencyPairs),
+            feeInfo,
             exchange.getExchangeSpecification().getApiKey(),
             signatureCreator,
             exchange.getNonceFactory());

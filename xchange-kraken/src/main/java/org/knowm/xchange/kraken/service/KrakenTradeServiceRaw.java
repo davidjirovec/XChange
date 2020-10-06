@@ -1,14 +1,9 @@
 package org.knowm.xchange.kraken.service;
 
-import java.io.IOException;
-import java.util.Map;
 import org.knowm.xchange.Exchange;
-import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.dto.trade.MarketOrder;
 import org.knowm.xchange.kraken.KrakenUtils;
-import org.knowm.xchange.kraken.dto.account.KrakenTradeVolume;
-import org.knowm.xchange.kraken.dto.account.results.KrakenTradeVolumeResult;
 import org.knowm.xchange.kraken.dto.trade.KrakenOpenPosition;
 import org.knowm.xchange.kraken.dto.trade.KrakenOrder;
 import org.knowm.xchange.kraken.dto.trade.KrakenOrderResponse;
@@ -26,6 +21,9 @@ import org.knowm.xchange.kraken.dto.trade.results.KrakenQueryOrderResult;
 import org.knowm.xchange.kraken.dto.trade.results.KrakenQueryTradeResult;
 import org.knowm.xchange.kraken.dto.trade.results.KrakenTradeHistoryResult;
 import org.knowm.xchange.kraken.dto.trade.results.KrakenTradeHistoryResult.KrakenTradeHistory;
+
+import java.io.IOException;
+import java.util.Map;
 
 public class KrakenTradeServiceRaw extends KrakenBaseService {
 
@@ -279,18 +277,6 @@ public class KrakenTradeServiceRaw extends KrakenBaseService {
             signatureCreator,
             exchange.getNonceFactory(),
             orderId);
-
-    return checkResult(result);
-  }
-
-  protected KrakenTradeVolume getTradeVolume(CurrencyPair... currencyPairs) throws IOException {
-
-    KrakenTradeVolumeResult result =
-        kraken.tradeVolume(
-            delimitAssetPairs(currencyPairs),
-            exchange.getExchangeSpecification().getApiKey(),
-            signatureCreator,
-            exchange.getNonceFactory());
 
     return checkResult(result);
   }
