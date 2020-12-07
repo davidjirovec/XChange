@@ -15,25 +15,22 @@ import info.bitrich.xchangestream.service.netty.WebSocketClientCompressionAllowC
 import info.bitrich.xchangestream.service.netty.WebSocketClientHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.extensions.WebSocketClientExtensionHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.knowm.xchange.exceptions.ExchangeException;
+import org.knowm.xchange.kraken.dto.account.KrakenWebsocketToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.netty.handler.codec.http.websocketx.extensions.WebSocketClientExtensionHandler;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import static info.bitrich.xchangestream.kraken.dto.enums.KrakenEventType.subscribe;
-import java.util.function.Supplier;
-import org.apache.commons.lang3.StringUtils;
-import org.knowm.xchange.exceptions.ExchangeException;
-import org.knowm.xchange.kraken.dto.account.KrakenWebsocketToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** @author makarid, pchertalev */
 public class KrakenStreamingService extends JsonNettyStreamingService {
@@ -140,7 +137,7 @@ public class KrakenStreamingService extends JsonNettyStreamingService {
     }
 
     if (!message.isArray() || channelName == null) {
-      LOG.error("Unknown message: {}", message.toString());
+      LOG.info("Unknown message: {}", message.toString());
       return;
     }
 
