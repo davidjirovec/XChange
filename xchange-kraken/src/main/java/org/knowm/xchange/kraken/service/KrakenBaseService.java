@@ -1,11 +1,5 @@
 package org.knowm.xchange.kraken.service;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.client.ExchangeRestProxyBuilder;
 import org.knowm.xchange.currency.Currency;
@@ -24,12 +18,21 @@ import org.knowm.xchange.kraken.dto.KrakenResult;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenAssetPair;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenAssets;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenServerTime;
+import org.knowm.xchange.kraken.dto.marketdata.KrakenSystemStatus;
 import org.knowm.xchange.kraken.dto.marketdata.results.KrakenAssetsResult;
 import org.knowm.xchange.kraken.dto.marketdata.results.KrakenServerTimeResult;
+import org.knowm.xchange.kraken.dto.marketdata.results.KrakenSystemStatusResult;
 import org.knowm.xchange.kraken.dto.trade.KrakenOrderFlags;
 import org.knowm.xchange.service.BaseExchangeService;
 import org.knowm.xchange.service.BaseService;
 import si.mazi.rescu.ParamsDigest;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class KrakenBaseService extends BaseExchangeService implements BaseService {
 
@@ -58,6 +61,13 @@ public class KrakenBaseService extends BaseExchangeService implements BaseServic
     KrakenServerTimeResult timeResult = kraken.getServerTime();
 
     return checkResult(timeResult);
+  }
+
+  public KrakenSystemStatus getSystemStatus() throws IOException {
+
+    KrakenSystemStatusResult statusResult = kraken.getSystemStatus();
+
+    return checkResult(statusResult);
   }
 
   public KrakenAssets getKrakenAssets(Currency... assets) throws IOException {

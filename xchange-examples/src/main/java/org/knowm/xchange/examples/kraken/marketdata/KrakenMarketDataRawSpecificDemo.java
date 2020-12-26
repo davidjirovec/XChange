@@ -1,6 +1,5 @@
 package org.knowm.xchange.examples.kraken.marketdata;
 
-import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.currency.Currency;
@@ -8,7 +7,10 @@ import org.knowm.xchange.kraken.KrakenExchange;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenAssets;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenServerTime;
 import org.knowm.xchange.kraken.dto.marketdata.KrakenSpreads;
+import org.knowm.xchange.kraken.dto.marketdata.KrakenSystemStatus;
 import org.knowm.xchange.kraken.service.KrakenMarketDataServiceRaw;
+
+import java.io.IOException;
 
 public class KrakenMarketDataRawSpecificDemo {
 
@@ -23,6 +25,9 @@ public class KrakenMarketDataRawSpecificDemo {
 
     KrakenServerTime serverTime = krakenMarketDataService.getServerTime();
     System.out.println(serverTime);
+
+    KrakenSystemStatus systemStatus = krakenMarketDataService.getSystemStatus();
+    System.out.println(systemStatus);
 
     KrakenAssets assets = krakenMarketDataService.getKrakenAssets();
     System.out.println(assets);
