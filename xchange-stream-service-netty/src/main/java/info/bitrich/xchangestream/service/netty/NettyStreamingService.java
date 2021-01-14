@@ -40,6 +40,9 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.subjects.PublishSubject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,8 +52,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class NettyStreamingService<T> extends ConnectableService {
   private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -80,7 +81,7 @@ public abstract class NettyStreamingService<T> extends ConnectableService {
   private final int idleTimeoutSeconds;
   private volatile NioEventLoopGroup eventLoopGroup;
   protected final Map<String, Subscription> channels = new ConcurrentHashMap<>();
-  private boolean compressedMessages = false;
+  private boolean compressedMessages = true;
   private final PublishSubject<Throwable> reconnFailEmitters = PublishSubject.create();
   private final PublishSubject<Object> connectionSuccessEmitters = PublishSubject.create();
   private final PublishSubject<Object> disconnectEmitters = PublishSubject.create();
